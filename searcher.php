@@ -40,7 +40,7 @@ $db_user        = 'root';
 $db_pass        = '1234';
 $db_database    = 'mini';
 $db_port        = '3306';
-$db_table 		= 'mini.test';
+$db_table 		= 'mini.wordsby';
 $max_results 	= '31';
 
 /*

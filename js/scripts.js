@@ -1,10 +1,7 @@
 /**
- *
  * scripts.js
- * This file runs all logic for the webpage index.html
- *
+ * This file runs all logic for the webpage search.html
  */
-
 
 /**
 * Globals
@@ -12,6 +9,9 @@
 * searchTxt2 = 2nd word to search for
 * chart_types = keep all chart types here
 * data_info = [minX, maxX, minY, maxY , groupcolour[] ] use to render graph later
+* words = An array consisting of search terms
+* type_of_chart = type of chart chosen by the user
+* ngram_mode = indicates wether ngram was chosen
 */
 var searchTxt1;
 var searchTxt2;
@@ -31,6 +31,9 @@ const minY_LOC = 2;
 const maxY_LOC = 3;
 const colors_LOC = 4;
 
+/**
+* search.html page logic
+*/
 function changeNgramMode(checkbox){
 	var state = checkbox.checked;
 	if(state){
@@ -47,6 +50,7 @@ function changeNgramMode(checkbox){
 	}
 }
 
+
 /**
 * Main search function called from html
 **/
@@ -62,7 +66,7 @@ function runSearch() {
 	document.getElementById('help_div').style.visibility = 'hidden';
 	words = [];//init
 	if(ngram_mode){//dynamic build of words[]
-		var str = searchTxt1.replace(/\s/g, "");
+		var str = searchTxt1.replace(/\s/g, ""); //remove white space
 		words =  str.split(",");
 	}
 	else{
@@ -102,15 +106,6 @@ function runSearch() {
 					if(resultsArr != null){
 						document.getElementById('help_div').style.visibility = 'hidden';
 						document.getElementById('results_div').style.visibility = 'visible';
-						/*debug*/
-						console.log("json valid? " + IsJsonString(JSON.stringify(resultsArr)));
-						console.log("resultArray: ");
-						for(var i =0;i < resultsArr.length ;i++)
-						{
-						var item = resultsArr[i];
-						console.log(item);
-						}
-						/*end debug*/
 						buildGraph(resultsArr);
 					}
 					else{error("ajax data null or undefined");}
@@ -124,89 +119,12 @@ function runSearch() {
 }
 
 /**
-* Recieves an array from query result
-* Returns an array in chart data format: [ {x:__ , y: ___ extra_field:___} ... {x:__ y: __ extra_field:___} ]
+* Method to build the desired graph 
+* Receives js array (gets graphData from it)
+* gets max/min values of graph data into global data_info
+* switch on type of graph and build
 */
-function getMyDataReady(array) {
-	var series = [];
-	var shapes = ['circle', 'triangle-up', 'cross', 'triangle-down', 'diamond', 'thin-x', 'square'];
-	var colors = ["#cc99ff" , "#63edd6" , "#FFFF99" , "#3300CC" , "#FF9933" , "#990033"];
-	var ans = [];
-
-	if(type_of_chart != "sunburstChart"){
-		for(var i =0; i <array.length; i ++) {
-			//console.log("getGraphData array[i=" + i+"] = " + array[i]);
-			if(array[i].length > 0){ //if any items exist
-			series.push([]);
-			for(var z =0; z <array[i].length; z ++) {
-				var item = array[i][z];
-				series[i].push({
-					x: item.year, y: item.count , size: item.count ,shape: shapes[i], name: item.author
-				});
-			}
-			series[i].sort(function(a, b){return a.x-b.x}); //sort by year for graph view
-			}
-		}
-
-		for(var idx =0; idx <series.length; idx ++) {
-		ans.push({
-			key: words[idx],
-				values: series[idx],
-				color: colors[idx],
-				nonStackable: false
-		});
-		}
-	}
-	else{ //sunburst , array received was sorted at server side array[0] > array[1] > ... > array[9]
-		var tiers = [ 1 , 2 , 4 ];//, 8 , 16]; //used for levels
-		var children = []; //arrays of children by tiers
-		var idx = 0;
-		var num_in_tier = 0;
-		data_info[colors_LOC] = colors;
-		//var item;
-		for(var i =0; i <array.length; i ++) { //for each word results
-			if(array[i].length > 0){ //check
-				for(var q = 0 ; q < tiers.length; q++){ //sort into tiers
-					children.push([]);
-					//var children_tier = [];
-					num_in_tier = tiers[q]; //init number of elements in tier
-					while(num_in_tier>0){
-						//item = array[i][idx];
-						if(q == tiers.length-1)
-							children[q].push({name: array[i][idx].word , value: array[i][idx].count}); //no children for last level
-						else
-							children[q].push({name: array[i][idx].word , value: array[i][idx].count , children:[]});
-						num_in_tier--;
-						idx++;
-					}
-				}
-				for(var x = children.length-2 ; x >= 0 ; x--){ //for all tier groups
-					var idx = 0 ;
-					var chunk = 0;
-					for(var y = 0 ; y < children[x].length ; y++ ){ //add 2 children to each item
-						children[x][y].children.push(children[x+1][chunk*2 + idx]);
-						idx++;
-						children[x][y].children.push(children[x+1][chunk*2 + idx]);
-						idx = 0;
-						chunk++;
-					}
-				}
-			}
-		}
-		ans = children[0];
-	}
-	return ans;
-}
-
-	/**
-	* buildGraph
-	* Receives js array
-	* gets graphData from it
-	* gets max/min values of graph data into global data_info
-	* gets type_of_chart from html
-	* switch on type of graph and build
-	*/
-	function buildGraph(resultsArr) {
+function buildGraph(resultsArr) {
 		console.log("js: started buildGraph ");
 		var graphData = getMyDataReady(resultsArr);
 		for(var t=0 ; t < graphData.length ; t++)
@@ -237,11 +155,11 @@ function getMyDataReady(array) {
 		}
 	}
 
-/**
- * Region graph generators
- */
 
-function createSunburstChart(data) {
+/**
+ * Section Graph data population
+ */
+function createSunburstChart(data){
 
     nv.addGraph(function() {
 		var chart = nv.models.sunburstChart();
@@ -258,9 +176,7 @@ function createSunburstChart(data) {
         return chart;
     });
 }
-
-
-function createLineChart(data) {
+function createLineChart(data){
 	nv.addGraph(function() {
 	var width = nv.utils.windowSize().width,
 	height = nv.utils.windowSize().height;
@@ -308,7 +224,6 @@ function createLineChart(data) {
   return chart;
 });
 }
-
 function createScatterChart(data){
 	nv.addGraph(function() {
 	var width = nv.utils.windowSize().width,
@@ -413,6 +328,87 @@ function createMultiBarChart(data){
     });
 }
 
+/* End Section*/
+
+/**
+* helpers Section
+*/
+
+/**
+* Recieves an array from query result
+* Returns an array in chart data format: [ {x:__ , y: ___ extra_field:___} ... {x:__ y: __ extra_field:___} ]
+*/
+function getMyDataReady(array) {
+	var series = [];
+	var shapes = ['circle', 'triangle-up', 'cross', 'triangle-down', 'diamond', 'thin-x', 'square'];
+	var colors = ["#cc99ff" , "#63edd6"  , "#3300CC" , "#FF9933" , "#990033", "#FFFF99"];
+	var ans = [];
+
+	if(type_of_chart != "sunburstChart"){
+		for(var i =0; i <array.length; i ++) {
+			//console.log("getGraphData array[i=" + i+"] = " + array[i]);
+			if(array[i].length > 0){ //if any items exist
+			series.push([]);
+			for(var z =0; z <array[i].length; z ++) {
+				var item = array[i][z];
+				series[i].push({
+					x: item.year, y: item.count , size: item.count ,shape: shapes[i], name: item.author
+				});
+			}
+			series[i].sort(function(a, b){return a.x-b.x}); //sort by year for graph view
+			}
+		}
+
+		for(var idx =0; idx <series.length; idx ++) {
+		ans.push({
+			key: words[idx],
+				values: series[idx],
+				color: colors[idx],
+				nonStackable: false
+		});
+		}
+	}
+	else{ //sunburst , array received was sorted at server side array[0] > array[1] > ... > array[9]
+		var tiers = [ 1 , 2 , 4 ];//, 8 , 16]; //used for levels
+		var children = []; //arrays of children by tiers
+		var idx = 0;
+		var num_in_tier = 0;
+		data_info[colors_LOC] = colors;
+		//var item;
+		for(var i =0; i <array.length; i ++) { //for each word results
+			if(array[i].length > 0){ //check
+				for(var q = 0 ; q < tiers.length; q++){ //sort into tiers
+					children.push([]);
+					//var children_tier = [];
+					num_in_tier = tiers[q]; //init number of elements in tier
+					while(num_in_tier>0){
+						//item = array[i][idx];
+						if(q == tiers.length-1)
+							children[q].push({name: array[i][idx].word , value: array[i][idx].count}); //no children for last level
+						else
+							children[q].push({name: array[i][idx].word , value: array[i][idx].count , children:[]});
+						num_in_tier--;
+						idx++;
+					}
+				}
+				for(var x = children.length-2 ; x >= 0 ; x--){ //for all tier groups
+					var idx = 0 ;
+					var chunk = 0;
+					for(var y = 0 ; y < children[x].length ; y++ ){ //add 2 children to each item
+						children[x][y].children.push(children[x+1][chunk*2 + idx]);
+						idx++;
+						children[x][y].children.push(children[x+1][chunk*2 + idx]);
+						idx = 0;
+						chunk++;
+					}
+				}
+			}
+		}
+		ans = children[0];
+	}
+	return ans;
+}
+
 /**
 * Receives data
 * Returns [minX, maxX, minY, maxY , groupcolor[] ]
@@ -443,9 +439,6 @@ function getMaxs(data){
 	return [minX, maxX, minY, maxY , groupcolor];
 }
 
-/**
-* helpers
-*/
 function IsJsonString(str) {
     try {
         JSON.parse(str);
@@ -455,7 +448,11 @@ function IsJsonString(str) {
     return true;
 }
 
+/* End Section*/
 
+/**
+* used for debugging
+*/
 function sinAndCos() {
   var sin = [],sin2 = [],
       cos = [];

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Project for ngraming Ben Yehuda project">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+	<!--  CSS Loading Section -->
+    <!-- Bootstrap core CSS + nvd3 + Custom styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/nv.d3.css" rel="stylesheet">
+	<link href="css/scatter.css" rel="stylesheet"  charset="utf-8">
+	<link href="css/CirclePacking.css" rel="stylesheet"  charset="utf-8">
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+
+	
+    <!--Loading the scripts.js file (and other libraries) for runtime use-->
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script src="js/nv.d3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/scripts.js"></script>
+
+	<title>Project For n-graming Ben Yehuda Project</title>
+	
+  </head>
+
+  <body data-spy="scroll" data-offset="0" data-target="#theMenu">
+
+	<!-- Menu -->
+	<nav class="menu" id="theMenu">
+		<div class="menu-wrap">
+			<h1 class="logo"><a href="index.html#home"></a></h1>
+			<i class="icon-remove menu-close"></i>
+			<a href="#home" class="smoothScroll">Home</a>
+      <a href="#search"><a href ="search.html">Search Page</a>
+			<a href="#about" class="smoothScroll">About</a>
+      <a target="_blank" href="http://benyehuda.org/">Ben Yehuda Project</a>
+			<a href="#contact" class="smoothScroll">Contact Us</a>
+		</div>
+
+		<!-- Menu button -->
+		<div id="menuToggle"><i class="icon-reorder"></i></div>
+	</nav>
+
+
+
+	<!-- ========== HEADER SECTION ========== -->
+	<section id="home" name="home"></section>
+	<div id="headerwrap">
+		<div class="container">
+			<div class="logo">
+				<img src="assets/img/logo.png">
+			</div>
+			<br>
+			<div class="row">
+				<h1>Ben Yehuda Word Frequency Checker</h1>
+				<br>
+				<h3>Created by Ben Gurion University students.</h3>
+
+			</div>
+		</div><!-- /container -->
+	</div><!-- /headerwrap -->
+
+	<!-- ========== ABOUT SECTION ========== -->
+	<section id="about" name="about"></section>
+	<div id="f">
+		<div class="container">
+			<div class="row">
+				<h3>ABOUT THE PROJECT</h3>
+				<p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+
+				<!-- INTRO INFORMATIO-->
+				<div class="col-lg-6 col-lg-offset-3">
+          <article>
+            <p>This project was inspired by Google ngrams and meant to serve as a tool for checking word popularity over a timeline.</p>
+            <p>First, all texts were scanned using parts of speach tagger developed by Meni Adler. <a href="https://www.cs.bgu.ac.il/~elhadad/nlp12/hebrew/TagHebrew.html">Link</a></p>
+            <p>Individual words were then counted and inserted into a database together with the year they were written,author and text. After the database was ready, it allowed interesting visualisation of word populerity, words by author, words by text.</p>
+            <div class = "tech" style="padding-left:150px;color:white;text-align:left;">
+              <p> <h2 style="color:white">Technologies used</h2>
+          <ul>
+            <li>Python</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Javascript</li>
+            <li>HTML</li>
+            <li>CSS</li>
+          </ul></p>
+        </article>
+				</div>
+      </div>
+			</div>
+		</div><!-- /container -->
+	</div><!-- /f -->
+
+
+	<!-- ========== CONTACT SECTION ========== -->
+	<section id="contact" name="contact"></section>
+	<div id="f">
+		<div class="container">
+			<div class="row">
+				<h3>CONTACT US</h3>
+        <p>Yoav Amir - yoavamir@gmail.com</p>
+        <p>Gilad Hoshmand - giladhoshmand@gmail.com </p>
+        <p>Daniel Gal - danihaif@gmail.com</p>
+        <p>Shahar Terem - shahar87@gmail.com</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="assets/js/classie.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/smoothscroll.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+</html>

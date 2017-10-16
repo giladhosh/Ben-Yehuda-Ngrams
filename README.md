@@ -1,9 +1,22 @@
-# Ben-Yehuda-Ngrams
+# Ben Yehuda Ngrams
 
-## Intro
+## Full Doco in github repo - [Documentation-full.pdf]
+This is a short revision.
+### Intro
+This is the product of a mini project course at Ben Gurion University.
+This site queries multiple terms from a SQL database and visualizes the results in different graph types.
 
-A mini project at Ben-Gurion University.
+### Work flow
+Site search terms entry -> SQL query -> process results to fit graph dataset -> Project data onto graph
 
-# Information
-I made a site to display visualization of different query results over a SQL database. 
-The project was inspired by Google ngrams and it is able to query an unlimitd(WOLOG) number of words and display their results.
+### Tech
+* Javascript, mainly using [JQUERY], AJAX.
+* [nvd3]
+* php
+* SQL database and querying
+* Visualization of data
+
+[//]: # (These are reference links used in the body of this note)
+[Documentation-full.pdf]: <https://github.com/giladhosh/Ben-Yehuda-Ngrams/blob/master/Documentation-full.pdf>
+[nvd3]: <http://nvd3.org/>
+[JQUERY]: <https://jquery.com/>
